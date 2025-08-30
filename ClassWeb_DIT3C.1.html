@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DIT3C Class Website</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 20%, #fbc2eb 0%, #a6c1ee 40%, #fcb69f 100%);
+            opacity: 0;
+            animation: fadeInBody 1s ease-in forwards;
+        }
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        header {
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+            background: linear-gradient(90deg, #ff6a88 0%, #0078D7 100%);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(-40px);
+            animation: slideDownHeader 1s 0.2s cubic-bezier(.42,0,.58,1) forwards;
+        }
+        @keyframes slideDownHeader {
+            from { opacity: 0; transform: translateY(-40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        header h1 {
+            font-size: 2.8em;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px #0078D7;
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 32px;
+        }
+        .card {
+            background: linear-gradient(135deg, #fff 60%, #fbc2eb 100%);
+            padding: 24px;
+            border-radius: 22px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+            opacity: 0;
+            transform: scale(0.96) translateY(30px);
+            animation: cardPopIn 0.7s cubic-bezier(.42,0,.58,1) forwards;
+            border: 2px solid #a6c1ee;
+            position: relative;
+        }
+        .card:nth-child(1) { animation-delay: 0.4s; }
+        .card:nth-child(2) { animation-delay: 0.6s; }
+        .card:nth-child(3) { animation-delay: 0.8s; }
+        .card:nth-child(4) { animation-delay: 1s; }
+        @keyframes cardPopIn {
+            from { opacity: 0; transform: scale(0.96) translateY(30px);}
+            to { opacity: 1; transform: scale(1) translateY(0);}
+        }
+        h2 {
+            color: #ff6a88;
+            text-shadow: 0 2px 8px #a6c1ee;
+            font-size: 1.5em;
+            margin-bottom: 12px;
+        }
+        .card ul li {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        .gallery-section {
+            padding: 32px;
+            background: linear-gradient(90deg, #fcb69f 0%, #a6c1ee 100%);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 -4px 24px #0078D744;
+        }
+        .gallery-section h2 {
+            color: #0078D7;
+            font-size: 1.6em;
+            margin-bottom: 18px;
+            text-shadow: 0 2px 8px #ff6a88;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+        }
+        .gallery-item {
+            position: relative;
+            transition: transform 0.2s;
+            background: linear-gradient(135deg, #fff 60%, #fbc2eb 100%);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0078D722;
+            padding: 8px;
+        }
+        .gallery-item:hover {
+            transform: scale(1.12) rotate(-2deg);
+            z-index: 2;
+            box-shadow: 0 4px 24px #ff6a88;
+        }
+        .gallery-item img {
+            max-width: 160px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0078D722;
+            border: 2px solid #ff6a88;
+            background: #fff;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 8px; right: 8px;
+            background: linear-gradient(135deg, #ff6a88 60%, #0078D7 100%);
+            color: #fff;
+            border: none; border-radius: 50%;
+            width: 28px; height: 28px;
+            cursor: pointer;
+            font-size: 1.3em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: linear-gradient(90deg, #0078D7 60%, #ff6a88 100%);
+        }
+        .view-modal {
+            display: none;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .view-modal-content {
+            background: linear-gradient(135deg, #fff 60%, #fbc2eb 100%);
+            padding: 28px;
+            border-radius: 18px;
+            text-align: center;
+            animation: popin 0.3s;
+            box-shadow: 0 4px 32px #0078D744;
+        }
+        @keyframes popin {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .view-modal-content img {
+            max-width: 80vw;
+            max-height: 80vh;
+            border-radius: 14px;
+            border: 3px solid #ff6a88;
+            background: #fff;
+            box-shadow: 0 2px 12px #0078D722;
+        }
+        .close-modal-btn {
+            margin-top: 14px;
+            background: linear-gradient(90deg, #ff6a88 60%, #0078D7 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #0078D744;
+        }
+        .close-modal-btn:hover {
+            background: linear-gradient(90deg, #0078D7 60%, #ff6a88 100%);
+        }
+        .popup-page {
+            max-width: 700px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #fff 60%, #fbc2eb 100%);
+            border-radius: 22px;
+            box-shadow: 0 4px 24px #0078D722;
+            padding: 36px;
+            animation: popupFadeIn 0.5s;
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: scale(0.95);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        .popup-page h1 {
+            color: #ff6a88;
+            text-shadow: 0 2px 8px #a6c1ee;
+        }
+        .popup-page ul { margin-top: 18px; }
+        .popup-page a { color: #0078D7; text-decoration: none; }
+        .chat-link { color: #ff6a88; font-weight: bold; }
+        .fun-btn {
+            animation: bounceBtn 1.2s infinite alternate;
+            background: linear-gradient(90deg, #fbc2eb 60%, #0078D7 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 1em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px #0078D744;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .fun-btn:hover {
+            background: linear-gradient(90deg, #0078D7 60%, #ff6a88 100%);
+        }
+        @keyframes bounceBtn {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(-8px);}
+        }
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+        }
+        /* Rainbow border for upload section */
+        .upload-section {
+            border: 3px solid;
+            border-image: linear-gradient(90deg, #ff6a88, #fbc2eb, #a6c1ee, #fcb69f) 1;
+            box-shadow: 0 2px 12px #ff6a88;
+        }
+        /* Animated gradient for gallery section */
+        .gallery-section {
+            animation: gradientMove 8s linear infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to DIT3C Class Website</h1>
+        <p>Your hub for class updates, resources, and announcements.</p>
+        <p>*still in progress*</p>
+    </header>
+    <section>
+        <div class="card">
+            <h2>Announcements</h2>
+            <ul>
+                <li>First PA meeting: <span style="color:#ff6a88;font-weight:bold;">Tuesday, 11:00 AM</span></li>
+                <li>Continue weekly report of My Jurnal DIT3C SI: <span style="color:hsl(327, 65%, 50%);font-weight:bold;">2025/2026 in Word W1-W6. Submit in W7</span></li>
+                <li>Mid-Sem Break: <span style="color:#ff6a88;font-weight:bold;">15.09.2025 - 21.09.2025</span></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="#syllabus" onclick="openPopup('syllabus')" class="fun-btn" target="_blank">🎓 Course Syllabus</a></li>
+                <li><a href="#lecturenotes" onclick="openPopup('lecturenotes')" class="fun-btn" target="_blank">📚 Lecture Notes</a></li>
+                <li><a href="#groupchat" onclick="openPopup('groupchat')" class="fun-btn" target="_blank">💬 Group Chat</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:drfizzune@gmail.com">drfizzune@gmail.com</a></p>
+            <p>WhatsApp: <a href="https://wa.me/60127674199" target="_blank">+60 12-767 4199</a></p>
+        </div>
+        <div class="card upload-section">
+            <h2>Class Gallery Uploader</h2>
+            <form id="uploadForm">
+                <label for="imageUpload">Upload a picture or file:</label><br>
+                <input type="file" id="imageUpload" accept="image/*" multiple>
+                <br>
+                <button type="submit" class="fun-btn">Post</button>
+            </form>
+        </div>
+    </section>
+    <div class="gallery-section">
+        <h2>Class Gallery</h2>
+        <div class="gallery" id="galleryView"></div>
+    </div>
+    <div class="view-modal" id="viewModal">
+        <div class="view-modal-content" id="viewModalContent">
+            <img id="modalImg" src="" alt="View">
+            <br>
+            <button class="close-modal-btn" id="closeModalBtn">Close</button>
+        </div>
+    </div>
+    <script>
+        function getImages() { return JSON.parse(localStorage.getItem('classGalleryImages') || '[]'); }
+        function setImages(images) { localStorage.setItem('classGalleryImages', JSON.stringify(images)); }
+
+        const uploadForm = document.getElementById('uploadForm');
+        const imageUpload = document.getElementById('imageUpload');
+        const galleryView = document.getElementById('galleryView');
+        const viewModal = document.getElementById('viewModal');
+        const modalImg = document.getElementById('modalImg');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        function renderGallery(targetGallery) {
+            targetGallery.innerHTML = '';
+            const images = getImages();
+            images.forEach((src, idx) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                const img = document.createElement('img');
+                img.src = src; img.style.cursor = "pointer";
+                img.onclick = function() {
+                    modalImg.src = src;
+                    viewModal.style.display = "flex";
+                };
+                galleryItem.appendChild(img);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn'; delBtn.innerHTML = '&times;';
+                delBtn.onclick = function() {
+                    const imgs = getImages(); imgs.splice(idx, 1);
+                    setImages(imgs); renderGallery(galleryView);
+                };
+                galleryItem.appendChild(delBtn);
+                targetGallery.appendChild(galleryItem);
+            });
+        }
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const files = imageUpload.files;
+            const images = getImages();
+            let filesRead = 0;
+            if (files.length === 0) { renderGallery(galleryView); uploadForm.reset(); return; }
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    images.push(event.target.result);
+                    filesRead++;
+                    if (filesRead === files.length) {
+                        setImages(images);
+                        renderGallery(galleryView);
+                        uploadForm.reset();
+                        showConfetti();
+                    }
+                }
+                reader.readAsDataURL(files[i]);
+            }
+        });
+        closeModalBtn.onclick = function() { viewModal.style.display = "none"; modalImg.src = ""; };
+        renderGallery(galleryView);
+
+        function openPopup(page) {
+            let content = "";
+            let emoji = "";
+            if (page === "syllabus") {
+                emoji = "🎓";
+                content = `
+                    <div class="popup-page">
+                        <h1>${emoji} Course Syllabus</h1>
+                        <p>Welcome to the syllabus! Ready to learn?</p>
+                        <ul>
+                            <li>Week 1: Introduction <span style="font-size:1.2em;">🚀</span></li>
+                            <li>Week 2: Fun with Coding <span style="font-size:1.2em;">💻</span></li>
+                            <li>Week 3: Team Project <span style="font-size:1.2em;">🤝</span></li>
+                        </ul>
+                        <button onclick="window.close()" class="fun-btn">&#8592; Back to Home</button>
+                    </div>`;
+            } else if (page === "lecturenotes") {
+                emoji = "📚";
+                content = `
+                    <div class="popup-page">
+                        <h1>${emoji} Lecture Notes</h1>
+                        <p>Here are your notes! Click to view:</p>
+                        <ul>
+                            <li><a href="#" onclick="alert('Week 1 Notes coming soon!')">Week 1 Notes <span style="font-size:1.2em;">📝</span></a></li>
+                            <li><a href="#" onclick="alert('Week 2 Notes coming soon!')">Week 2 Notes <span style="font-size:1.2em;">📝</span></a></li>
+                        </ul>
+                        <button onclick="window.close()" class="fun-btn">&#8592; Back to Home</button>
+                    </div>`;
+            } else if (page === "groupchat") {
+                emoji = "💬";
+                content = `
+                    <div class="popup-page">
+                        <h1>${emoji} Group Chat</h1>
+                        <p>Join the class group chat for updates and discussions:</p>
+                        <a class="chat-link" href="https://chat.whatsapp.com/" target="_blank">WhatsApp Group Link</a>
+                        <br><br>
+                        <button onclick="window.close()" class="fun-btn">&#8592; Back to Home</button>
+                    </div>`;
+            }
+            const popup = window.open("", "_blank", "width=800,height=600");
+            popup.document.write(`
+            
+            `);
+        }
+
+        function showConfetti() {
+            const canvas = document.createElement('canvas');
+            canvas.className = 'confetti';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let confetti = [];
+            for(let i=0;i<30;i++){
+                confetti.push({
+                    x: Math.random()*canvas.width,
+                    y: Math.random()*canvas.height/2,
+                    r: Math.random()*8+4,
+                    d: Math.random()*Math.PI*2,
+                    color: 'hsl('+(Math.random()*360)+',80%,60%)'
+                });
+            }
+            let frame = 0;
+            function drawConfetti(){
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                confetti.forEach(c=>{
+                    ctx.beginPath();
+                    ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+                    ctx.fillStyle=c.color;
+                    ctx.fill();
+                    c.y+=2+Math.random()*2;
+                    c.x+=Math.sin(c.d)*2;
+                    if(c.y>canvas.height){c.y=0;}
+                    if(c.x>canvas.width){c.x=0;}
+                    c.d+=0.02;
+                });
+                frame++;
+                if(frame<60) requestAnimationFrame(drawConfetti);
+                else document.body.removeChild(canvas);
+            }
+            drawConfetti();
+        }
+    </script>
+</body>
+</html>
